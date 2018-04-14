@@ -75,16 +75,15 @@ const apps = {
     },
     openPanel: function() {
         let style = this.apps.style;
-        style.display = (style.display == 'none'||'') ? 'block' : 'none';
+        style.display = (style.display == '') ? 'block' : '';
     },
     launchApp: function(e) {
-            if (e.target && e.target.className == 'icon') {
-                console.log(e.target.dataset.appid)
-                chrome.management.launchApp(e.target.dataset.appid, function () {
-                    console.log('app launched');
-                })
-            }
-        
+        if (e.target && e.target.className == 'icon') {
+            console.log(e.target.dataset.appid)
+            chrome.management.launchApp(e.target.dataset.appid, function () {
+                console.log('app launched');
+            })
+        }
     }
 }
 
