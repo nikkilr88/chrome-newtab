@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+
 body {
     padding: 0;
     margin: 0;
     font-family: sans-serif;
+    font-size: 15px;
 }
 
 a {
@@ -10,6 +14,26 @@ a {
     border-bottom: 1px dotted #fcfcfc;
 }
 
+.fa-cog, .settings {
+    display: none;
+}
+
+.gradient {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+}
+.timeInfo {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 10px rgba(0,0,0,0.2);
+    color: #fcfcfc;
+    font-size: 6em;
+}
 .search {
     position: absolute;
     top: 50%;
@@ -34,7 +58,24 @@ a {
 .search input:hover {
     opacity: 1;
     transform: scale(1.1);
-    box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);
+    /* box-shadow: 0 0 10px 5px rgba(0,0,0,0.1); */
+}
+
+.quoteInfo {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fcfcfc;
+    font-size: 1em;
+}
+
+.weatherInfo {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    color: #fcfcfc;
+    font-family: 'Raleway';
 }
 
 .bgInfo {
@@ -42,7 +83,8 @@ a {
     bottom: 15px;
     left: 15px;
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 1em;
+    font-family: 'Raleway';
     color: #fcfcfc;
     background: #2b2b2b;
     opacity: 0.3;
