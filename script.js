@@ -42,6 +42,52 @@ const options = {
     }
 }
 
+const apps = {
+    init: function() {
+        this.cacheDOM();
+        this.bindEvents();
+        this.getApps();
+    },
+    cacheDOM: function() {
+        this.btn = document.querySelector('.apps');
+        this.apps = document.querySelector('#apps');
+    },
+    bindEvents: function() {
+        this.btn.addEventListener('click', this.openPanel.bind(this));
+        this.apps.addEventListener('click', this.launchApp.bind(this));
+    },
+    getApps: function() {
+        chrome.management.getAll(function (data) {
+            let html = data.map(function(app){
+                if(app.isApp) {
+                    return apps.appSpan(app);
+                }
+            }).join('');
+
+            apps.apps.innerHTML = html;
+        });
+    },
+    appSpan: function(app) {
+        let icon = app.icons.filter(function(icon) {
+            return icon.size == 128;
+        });
+        return `<img class="icon" src='${icon[0].url}' data-appId='${app.id}'>`
+    },
+    openPanel: function() {
+        let style = this.apps.style;
+        style.display = (style.display == 'none'||'') ? 'block' : 'none';
+    },
+    launchApp: function(e) {
+            if (e.target && e.target.className == 'icon') {
+                console.log(e.target.dataset.appid)
+                chrome.management.launchApp(e.target.dataset.appid, function () {
+                    console.log('app launched');
+                })
+            }
+        
+    }
+}
+
 // TIME
 const time = {
     init: function() {
@@ -77,14 +123,25 @@ const searchBar = {
     },
     cacheDOM: function() {
         this.searchbar = document.querySelector('#search');
+        this.close = document.querySelector('.times');
+        this.open = document.querySelector('.mag');
+        this.search = document.querySelector('.search');
     },
     bindEvents: function() {
         this.searchbar.addEventListener('keyup', this.query.bind(this));
+        this.close.addEventListener('click', this.closeSearch.bind(this));
+        this.open.addEventListener('click', this.openSearch.bind(this));
     },
     query: function(e) {
         if(e.which == 13) {
             window.open(`http://www.google.com/search?q=${this.searchbar.value}`, '_self')
         }
+    },
+    openSearch: function() {
+        this.search.style.display = 'block';
+    },
+    closeSearch: function() {
+        this.search.style.display = 'none';
     }
 }
 
@@ -194,6 +251,7 @@ const weather = {
 
 // quote.init();
 options.init();
+apps.init();
 weather.init();
 time.init();
 searchBar.init();
