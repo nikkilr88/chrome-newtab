@@ -42,11 +42,22 @@ a {
 
 #apps {
     position: absolute;
-    top: 45px;
+    top: 55px;
     left: 65px;
     background: #fcfcfc;
     width: 300px;
     display: none;
+}
+
+#apps:before {
+    content: '';
+    position: absolute;
+    background: #fcfcfc;
+    height: 15px;
+    width: 15px;
+    top: -8px;
+    left: 15px;
+    -webkit-transform: rotate(45deg) skew(5deg, 5deg);
 }
 
 .icon {
