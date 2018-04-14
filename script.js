@@ -83,7 +83,7 @@ const background = {
     },
 
     setUser: function(name, url) {
-        this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a?`;
+        this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`;
     }
 }
 
