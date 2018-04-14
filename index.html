@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
         crossorigin="anonymous">
 
@@ -13,12 +14,18 @@
 </head>
 <body>
 
-    <i class="fas fa-cog"></i>
+    <div class="icons">
+        <i class="material-icons">settings</i>
+        <i class="material-icons apps">apps</i>
+        <i class="material-icons mag">search</i>
+    </div>
 
     <div class="settings">
         <input id="zip" type="text" placeholder="zip code,country abbrev.">
         <button id="setLocation">Set</button>
     </div>
+
+    <div id="apps"></div>
 
     <div class="gradient"></div>
 
@@ -27,6 +34,7 @@
     </div>
 
     <div class="search">
+        <i class="material-icons times">close</i>
         <input type="text" id="search" placeholder="Google Search" spellcheck="false">
     </div>
 
