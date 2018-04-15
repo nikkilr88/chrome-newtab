@@ -137,10 +137,12 @@ const searchBar = {
         }
     },
     openSearch: function() {
-        this.search.style.display = 'block';
+        this.search.style.opacity = '1';
+        this.search.style.visibility = 'visible';
     },
     closeSearch: function() {
-        this.search.style.display = 'none';
+        this.search.style.opacity = '0';
+        this.search.style.visibility = 'hidden';
     }
 }
 
@@ -168,7 +170,8 @@ const quote = {
 
 // BACKGROUND SHIZZ
 const background = {
-    url: `https://api.unsplash.com/search/photos?page=1&query=landscape&client_id=${keys.unsplash}`,
+    // 9Y5Wk7favpE,Y-MGVIkpyFw
+    url: `https://api.unsplash.com/search/photos?page=1&per_page=15&query=landscape&client_id=${keys.unsplash}`,
     init: function() {
         this.cacheDOM();
         this.fetchImage(this.url);
@@ -200,6 +203,10 @@ const background = {
         style.backgroundImage = `url(${url})`;
         style.backgroundSize = 'cover';
         style.backgroundRepeat = 'no-repeat';
+        
+        let ss = document.styleSheets[2];
+        ss.cssRules[13].style.background = `url(${url})`;
+        ss.cssRules[13].style.backgroundSize = 'cover';
     },
     setUser: function(name, url) {
         this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`;
