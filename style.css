@@ -43,10 +43,11 @@ a {
 #apps {
     position: absolute;
     top: 55px;
-    left: 65px;
+    left: 45px;
     background: #fcfcfc;
     width: 300px;
     display: none;
+    box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);
 }
 
 #apps:before {
@@ -56,7 +57,7 @@ a {
     height: 15px;
     width: 15px;
     top: -8px;
-    left: 15px;
+    left: 35px;
     -webkit-transform: rotate(45deg) skew(5deg, 5deg);
 }
 
@@ -86,22 +87,41 @@ a {
     font-size: 7em;
     font-weight: bold;
 }
+
+/* 13 */
+.search::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    filter: blur(10px);
+    margin: -20px;
+}
+
 .search {
     position: absolute;
     height: 100vh;
     width: 100vw;
     background: rgba(0,0,0,0.95);
     z-index: 999;
-    display: none;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.3s, opacity 0.3s linear;
 }
 
 .search .times {
+    position: relative;
     color: #fcfcfc;
     font-size: 2em;
     margin: 15px;
     float: right;
     cursor: pointer;
+    z-index: 999;
 }
+
 
 .search input {
     position: absolute;
@@ -115,7 +135,11 @@ a {
     color: #fcfcfc;
     border-bottom: 1px solid #fcfcfc;
     outline: none;
-    font-size: 20px;
+    font-size: 30px;
+}
+
+.search input::placeholder {
+    color: #fefefe;
 }
 
 .quoteInfo {
