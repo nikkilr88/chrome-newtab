@@ -37,7 +37,11 @@ a {
 }
 
 .settings {
+    position: absolute;
     display: none;
+    background: #2980b9;
+    width: 250px;
+    height: 100vh;
 }
 
 #apps {
