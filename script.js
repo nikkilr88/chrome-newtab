@@ -257,7 +257,7 @@ const weather = {
                     let temp = data.main.temp;
                     let conditions = data.weather[0].main;
 
-                    this.weather.innerText = `${temp} °F, ${conditions}`;
+                    this.weather.innerText = `${Math.round(temp)} °F, ${conditions}`;
                 });
             });
         });
