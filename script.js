@@ -59,7 +59,7 @@ const apps = {
     getApps: function() {
         chrome.management.getAll(function (data) {
             let html = data.map(function(app){
-                if(app.isApp) {
+                if(app.isApp && app.enabled) {
                     return apps.appSpan(app);
                 }
             }).join('');
@@ -82,7 +82,8 @@ const apps = {
             console.log(e.target.dataset.appid)
             chrome.management.launchApp(e.target.dataset.appid, function () {
                 console.log('app launched');
-            })
+                this.openPanel();
+            }.bind(this))
         }
     }
 }
@@ -205,7 +206,7 @@ const background = {
         style.backgroundRepeat = 'no-repeat';
         
         let ss = document.styleSheets[2];
-        ss.cssRules[13].style.background = `url(${url})`;
+        ss.cssRules[13].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
         ss.cssRules[13].style.backgroundSize = 'cover';
     },
     setUser: function(name, url) {
