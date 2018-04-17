@@ -1,3 +1,16 @@
+const app = {
+    init: function() {
+        // quote.init();
+        options.init();
+        apps.init();
+        weather.init();
+        time.init();
+        searchBar.init();
+        links.init();
+        background.init();
+    }
+}
+
 // OPEN LINKS IN NEW TAB
 const links = {
     init: function() {
@@ -36,7 +49,7 @@ const options = {
            console.log('set zip');
         });
     },
-    getStoredData(key, fn) {
+    getStoredData: function(key, fn) {
         chrome.storage.sync.get(key, result => {
             fn(result);
         });
@@ -181,7 +194,10 @@ const quote = {
 
 // BACKGROUND SHIZZ
 const background = {
-    // Pick image from array of IDs? 9Y5Wk7favpE,Y-MGVIkpyFw
+    /* 
+    Pick image from array of IDs? 
+    9Y5Wk7favpE, Y-MGVIkpyFw, dVFiG8RL99E, 0HF6s01qyIw, Defzr230Q7I, i2KibvLYjqk
+    */
     url: `https://api.unsplash.com/search/photos?page=1&per_page=15&query=landscape&client_id=${keys.unsplash}`,
     init: function() {
         this.cacheDOM();
@@ -214,7 +230,7 @@ const background = {
         style.backgroundSize = 'cover';
         style.backgroundRepeat = 'no-repeat';
         
-        let ss = document.styleSheets[2];
+        let ss = document.styleSheets[3];
         ss.cssRules[13].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
         ss.cssRules[13].style.backgroundSize = 'cover';
     },
@@ -254,21 +270,47 @@ const weather = {
 
                 res.json().then(data => {
                     console.log(data)
+                    let iconId = data.weather[0].icon;
                     let temp = data.main.temp;
-                    let conditions = data.weather[0].main;
+                    let conditions = data.weather[0].description;
 
-                    this.weather.innerText = `${Math.round(temp)} °F, ${conditions}`;
+                    this.weather.innerHTML = `${this.getIcon(iconId)} ${Math.round(temp)} °F`;
                 });
             });
         });
+    },
+    getIcon: function(id) {
+        switch (id) {
+            case '01d':
+            case '01n':
+                return '<i class="wi wi-day-sunny"></i>';
+
+            case '02d':
+            case '02n':
+            case '03d':
+            case '03n':
+            case '04d':
+            case '04n':
+                return '<i class="wi wi-cloudy"></i>';
+
+            case '09d':
+            case '09n':
+            case '10d':
+            case '10n':
+                return '<i class="wi wi-showers"></i>';
+
+            case "11d":
+                return '<i class="wi wi-thunderstorm"></i>';
+
+            case '13d':
+            case '13n':
+                return '<i class="wi wi-snowflake-cold"></i>';
+
+            case '50d':
+            case '50n':
+                return '<i class="wi-fog"></i>'
+        }
     }
 }
 
-// quote.init();
-options.init();
-apps.init();
-weather.init();
-time.init();
-searchBar.init();
-links.init();
-background.init();
+app.init();
