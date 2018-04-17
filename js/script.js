@@ -46,7 +46,7 @@ const options = {
     },
     saveLocation: function() {
         chrome.storage.sync.set({ zip: this.zip.value }, () => {
-           console.log('set zip');
+           weather.display();
         });
     },
     getStoredData: function(key, fn) {
@@ -196,7 +196,7 @@ const quote = {
 const background = {
     /* 
     Pick image from array of IDs? 
-    9Y5Wk7favpE, Y-MGVIkpyFw, dVFiG8RL99E, 0HF6s01qyIw, Defzr230Q7I, i2KibvLYjqk
+    9Y5Wk7favpE, Y-MGVIkpyFw, dVFiG8RL99E, 0HF6s01qyIw, Defzr230Q7I, i2KibvLYjqk, 2XfDYMK9cSE
     */
     url: `https://api.unsplash.com/search/photos?page=1&per_page=15&query=landscape&client_id=${keys.unsplash}`,
     init: function() {
@@ -244,7 +244,7 @@ const weather = {
     url: `http://api.openweathermap.org/data/2.5/weather?appid=${keys.ow}&units=imperial`,
     init: function() {
         this.cacheDOM();
-        this.getWeather();
+        this.display();
     },
     cacheDOM: function() {
         this.weather = document.querySelector('.weather');
@@ -254,7 +254,7 @@ const weather = {
         let data = navigator.geolocation.getCurrentPosition(this.getWeather.bind(this));
 
     },
-    getWeather: function() {
+    getWeather: function(fn) {
         options.getStoredData('zip', data =>{
             if (!data.zip) return;
 
@@ -269,12 +269,15 @@ const weather = {
                 }
 
                 res.json().then(data => {
-                    console.log(data)
                     let iconId = data.weather[0].icon;
                     let temp = data.main.temp;
-                    let conditions = data.weather[0].description;
 
-                    this.weather.innerHTML = `${this.getIcon(iconId)} ${Math.round(temp)} °F`;
+                    let weather = {
+                        icon: this.getIcon(iconId),
+                        temp: Math.round(data.main.temp)
+                    };
+
+                    fn(weather);
                 });
             });
         });
@@ -310,6 +313,11 @@ const weather = {
             case '50n':
                 return '<i class="wi-fog"></i>'
         }
+    },
+    display: function () {
+        this.getWeather(data => {
+            this.weather.innerHTML = `${data.icon} ${data.temp}°`;
+        });
     }
 }
 
