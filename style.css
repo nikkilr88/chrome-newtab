@@ -160,7 +160,18 @@ a {
     bottom: 15px;
     right: 15px;
     color: #fcfcfc;
-    font-family: 'Raleway';
+    font-size: 18;
+    /* font-family: 'Raleway'; */
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.weatherInfo:hover {
+    opacity: 1;
+}
+
+.weatherInfo .wi {
+    font-size: 24px;
 }
 
 .bgInfo {
