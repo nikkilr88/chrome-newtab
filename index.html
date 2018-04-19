@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
         crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.css">
 
     <link rel="stylesheet" href="css/style.css">
     <title>tabS</title>
 </head>
+
 <body>
 
     <div class="icons">
@@ -24,10 +26,44 @@
     <div class="settings">
         <h3>Settings</h3>
 
-        <h4><i class="material-icons">location_on</i> Location</h4>
-        <input id="zip" type="text" placeholder="zip code,country abbrev.">
-        <button id="setLocation">Set</button>
-        <p>Example: 53225,us</p>
+        <section id="location">
+            <h4>
+                <i class="material-icons">location_on</i>
+                Location
+            </h4>
+
+            <input id="zip" type="text" placeholder="zip code,country abbrev.">
+            <button id="setLocation">Set</button>
+            <p>Examples:</p>
+            <p>Milwaukee, WI: 53225,us</p>
+            <p>Guadalajara, Mexico: 44100,mx</p>
+
+            <p><i class="material-icons">warning</i> Some zip codes outside of the US might not work.</p>
+        </section>
+
+        <section id="time">
+            <h4>
+                <i class="material-icons">access_time</i>
+                Time
+            </h4>
+
+            <label for="12hr">12hr</label>
+            <input type="radio" value="12hr" name="timeFormat" id="12hr">
+            <label for="24hr">24hr</label>
+            <input type="radio" value="24hr" name="timeFormat" id="24hr" checked>
+        </section>
+
+        <section id="weather">
+            <h4>
+                <i class="material-icons">wb_sunny</i>
+                Weather
+            </h4>
+
+            <label for="degF">°F</label>
+            <input type="radio" value="f" name="weather" id="degF" checked>
+            <label for="degC">°C</label>
+            <input type="radio" value="c" name="weather" id="degC">
+        </section>
     </div>
 
     <div id="apps"></div>
@@ -38,9 +74,9 @@
         <span class="time"></span>
     </div>
 
-    <div class="search">
+    <div class="search" tabindex="1">
         <i class="material-icons times">close</i>
-        <input type="text" id="search" placeholder="Google Search" spellcheck="false">
+        <input type="text" id="search" spellcheck="false">
     </div>
 
     <div class="quoteInfo">
@@ -60,4 +96,5 @@
     <script src="js/keys.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
