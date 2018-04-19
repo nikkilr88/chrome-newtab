@@ -36,13 +36,42 @@ const options = {
     init: function() {
         this.cacheDOM();
         this.bindEvents();
+        this.onLoad();
     },
     cacheDOM: function() {
         this.btn = document.querySelector('#setLocation');
         this.zip = document.querySelector('#zip');
+        this.timeInputs = document.querySelectorAll('#time input');
     },
     bindEvents: function() {
-        this.btn.addEventListener('click', this.saveLocation.bind(this))
+        this.btn.addEventListener('click', this.saveLocation.bind(this));
+        this.timeInputs.forEach(input => {
+            input.addEventListener('change', this.setTimeFormat.bind(this));
+        });
+    },
+    onLoad: function() {
+        this.getStoredData('time', data => {
+            if(!data.time) return;
+
+            for(let input of this.timeInputs){
+                if(input.id == data.time) {
+                    input.checked = true;
+                }
+            }
+        });
+    },
+    setTimeFormat: function() {
+        for(let input of this.timeInputs) {
+            if(input.checked) {
+                this.saveData('time', input.value);
+                time.display();
+            }
+        }
+    },
+    saveData: function(key, val) {
+        chrome.storage.sync.set({ [key]: val }, () => {
+            console.log('saved: ', key, val);
+        });
     },
     saveLocation: function() {
         chrome.storage.sync.set({ zip: this.zip.value }, () => {
@@ -108,26 +137,48 @@ const apps = {
 const time = {
     init: function() {
         this.cacheDOM();
-        this.displayTime();
+        this.display();
         this.updateTime();
     },
     cacheDOM: function() {
         this.time = document.querySelector('.time');
     },
-    getTime: function() {
-        let d = new Date();
-        let hours = d.getHours();
-        let mins = d.getMinutes();
-        return `${hours}:${this.formatMins(mins)}`
+    getTime: function(fn) {
+        options.getStoredData('time', data => {
+            let format;
+            let d = new Date();
+            let hours = d.getHours();
+            if(data.time) {
+                format = data.time;                
+            } 
+            else {
+                for (let input of options.timeInputs) {
+                    if (input.checked) {
+                        format = input.checked.value;
+                    }
+                }
+            }
+            let hrsFormat = (format == '12hr') ? this.convertTo12(hours) : hours;
+            let mins = d.getMinutes();
+            
+            fn(`${hrsFormat}:${this.formatMins(mins)}`);
+        });
+    },
+    convertTo12: function(hr) {
+        let h = hr % 12;
+        if (h === 0) h = 12;
+        return h;
     },
     formatMins: function(mins) {
-        return (mins < 10) ? '0'+ mins : mins
+        return (mins < 10) ? '0'+ mins : mins;
     },
-    displayTime: function() {
-        this.time.innerText = this.getTime();
+    display: function() {
+        this.getTime(time => {
+            this.time.innerText = time;
+        });
     },
     updateTime: function() {
-        setInterval(this.displayTime.bind(this), 1000);
+        let update = setInterval(this.display.bind(this), 1000);
     }
  }
 
@@ -194,19 +245,17 @@ const quote = {
 
 // BACKGROUND SHIZZ
 const background = {
-    /* 
-    Pick image from array of IDs? 
-    9Y5Wk7favpE, Y-MGVIkpyFw, dVFiG8RL99E, 0HF6s01qyIw, Defzr230Q7I, i2KibvLYjqk, 2XfDYMK9cSE
-    */
-    url: `https://api.unsplash.com/search/photos?page=1&per_page=15&query=landscape&client_id=${keys.unsplash}`,
+    ids: ['9Y5Wk7favpE', 'Y-MGVIkpyFw', 'dVFiG8RL99E', 'Defzr230Q7I', 'i2KibvLYjqk', '2XfDYMK9cSE', '1JHzqk5oTy8', 'Jztmx9yqjBw', 'eKU3JGNCCMg', 'xJ2tjuUHD9M', 'upXoQv5GAr8'],
     init: function() {
         this.cacheDOM();
-        this.fetchImage(this.url);
+        this.fetchImage();
     },
     cacheDOM: function() {
         this.name = document.querySelector('.name');
     },
-    fetchImage: function(url) {
+    fetchImage: function() {
+        let rand = Math.floor(Math.random() * this.ids.length);
+        let url = `https://api.unsplash.com/photos/${this.ids[rand]}?client_id=${keys.unsplash}`
         fetch(url)
         .then(response => {
             if (response.status !== 200) {
@@ -214,13 +263,12 @@ const background = {
                 return;
             }
             response.json().then(data => {
-                let rand = Math.floor(Math.random() * data.results.length);
-                let img = data.results[rand].urls.regular;
-                let name = data.results[rand].user.name;
-                let userURL = data.results[rand].user.links.html;
+                let img = data.urls.regular;
+                let name = data.user.name;
+                let link = data.user.links.html;
 
                 this.setImage(img);
-                this.setUser(name, userURL);
+                this.setUser(name, link);
             });
         });
     },
@@ -231,8 +279,8 @@ const background = {
         style.backgroundRepeat = 'no-repeat';
         
         let ss = document.styleSheets[3];
-        ss.cssRules[13].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
-        ss.cssRules[13].style.backgroundSize = 'cover';
+        ss.cssRules[14].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
+        ss.cssRules[14].style.backgroundSize = 'cover';
     },
     setUser: function(name, url) {
         this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`;
