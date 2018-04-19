@@ -8,5 +8,8 @@
     "permissions": [
         "storage",
         "management"
+    ],
+    "web_accessible_resources": [
+        "*.png"
     ]
 }
