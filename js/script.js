@@ -33,6 +33,7 @@ const links = {
 
 // APP OPTIONS
 const options = {
+    hidden: true,
     init: function() {
         this.cacheDOM();
         this.bindEvents();
@@ -40,14 +41,19 @@ const options = {
     },
     cacheDOM: function() {
         this.btn = document.querySelector('#setLocation');
+        this.cog = document.querySelector('.cog');
         this.zip = document.querySelector('#zip');
         this.timeInputs = document.querySelectorAll('#time input');
+        this.settingsPanel = document.querySelector('.settings');
+        this.ok = document.querySelector('.ok');
     },
     bindEvents: function() {
         this.btn.addEventListener('click', this.saveLocation.bind(this));
         this.timeInputs.forEach(input => {
             input.addEventListener('change', this.setTimeFormat.bind(this));
         });
+        this.cog.addEventListener('click', this.openSettings.bind(this));
+        this.ok.addEventListener('click', this.openSettings.bind(this));
     },
     onLoad: function() {
         this.getStoredData('time', data => {
@@ -82,6 +88,16 @@ const options = {
         chrome.storage.sync.get(key, result => {
             fn(result);
         });
+    },
+    openSettings: function() {
+        let panel = this.settingsPanel.style;
+        if(this.hidden) {
+            panel.transform = 'translateX(0)';
+            this.hidden = false;
+        } else {
+            panel.transform = 'translateX(-250px)';
+            this.hidden = true;
+        }
     }
 }
 
@@ -279,8 +295,8 @@ const background = {
         style.backgroundRepeat = 'no-repeat';
         
         let ss = document.styleSheets[3];
-        ss.cssRules[14].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
-        ss.cssRules[14].style.backgroundSize = 'cover';
+        ss.cssRules[18].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
+        ss.cssRules[18].style.backgroundSize = 'cover';
     },
     setUser: function(name, url) {
         this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`;
