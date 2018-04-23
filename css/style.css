@@ -40,15 +40,39 @@ a {
 
 .settings {
     position: absolute;
-    display: none;
-    background: #2980b9;
+    display: block;
+    background: #2b2b2b;
+    color: #fcfcfc;
     width: 250px;
     height: 100vh;
     z-index: 999;
+    transform: translateX(-250px);
+    transition: transform 0.3s ease-in-out;
+}
+
+.settings h3 {
+    padding: 25px 10px;
+    background: #444;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.settings h4 {
+    display: flex;
 }
 
 .settings i {
     font-size: 16px;
+    margin-right: 5px;
+}
+
+.settings section {
+    margin-left: 10px;
+}
+
+.settings button {
+    margin: 15px 10px;
+    cursor: pointer;
 }
 
 #apps {
