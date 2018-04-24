@@ -27,42 +27,47 @@
         <h3>Settings</h3>
 
         <section id="location">
-            <h4>
-                <i class="material-icons">location_on</i> 
+            <h4 class="openPanel">
+                <i class="material-icons">location_on</i>
                 Location
             </h4>
+            <div class="panel">
+                <input id="zip" type="text" placeholder="zip code,country abbrev.">
+                <button id="setLocation">Set</button>
+                <p>Examples:</p>
+                <p>Milwaukee, WI: 53225,us</p>
+                <p>Guadalajara, Mexico: 44100,mx</p>
 
-            <input id="zip" type="text" placeholder="zip code,country abbrev.">
-            <button id="setLocation">Set</button>
-            <p>Examples:</p>
-            <p>Milwaukee, WI: 53225,us</p>
-            <p>Guadalajara, Mexico: 44100,mx</p>
-
-            <small><i class="material-icons">warning</i> Some zip codes outside of the US might not work.</small>
+<small>&#9888; Some zip codes outside of the US might not work.</small>
+            </div>
         </section>
 
         <section id="time">
-            <h4>
-                <i class="material-icons">access_time</i> 
+            <h4 class="openPanel">
+                <i class="material-icons">access_time</i>
                 Time
             </h4>
 
-            <label for="12hr">12hr</label>
-            <input type="radio" value="12hr" name="timeFormat" id="12hr">
-            <label for="24hr">24hr</label>
-            <input type="radio" value="24hr" name="timeFormat" id="24hr" checked>
+            <div class="panel">
+                <label for="12hr">12hr</label>
+                <input type="radio" value="12hr" name="timeFormat" id="12hr">
+                <label for="24hr">24hr</label>
+                <input type="radio" value="24hr" name="timeFormat" id="24hr" checked>
+            </div>
         </section>
 
         <section id="weather">
-            <h4>
-                <i class="material-icons">wb_sunny</i> 
+            <h4 class="openPanel">
+                <i class="material-icons">wb_sunny</i>
                 Weather
             </h4>
 
-            <label for="degF">°F</label>
-            <input type="radio" value="f" name="weather" id="degF" checked>
-            <label for="degC">°C</label>
-            <input type="radio" value="c" name="weather" id="degC">
+            <div class="panel">
+                <label for="degF">°F</label>
+                <input type="radio" value="f" name="weather" id="degF" checked>
+                <label for="degC">°C</label>
+                <input type="radio" value="c" name="weather" id="degC">
+            </div>
         </section>
 
         <button class="ok">OK</button>
