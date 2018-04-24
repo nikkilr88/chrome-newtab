@@ -46,6 +46,8 @@ const options = {
         this.timeInputs = document.querySelectorAll('#time input');
         this.settingsPanel = document.querySelector('.settings');
         this.ok = document.querySelector('.ok');
+        this.panelBtns = document.querySelectorAll('.openPanel');
+        this.panels = document.querySelectorAll('.panel');
     },
     bindEvents: function() {
         this.btn.addEventListener('click', this.saveLocation.bind(this));
@@ -54,6 +56,7 @@ const options = {
         });
         this.cog.addEventListener('click', this.openSettings.bind(this));
         this.ok.addEventListener('click', this.openSettings.bind(this));
+        this.panelBtns.forEach(btn => btn.addEventListener('click', this.togglePanel));
     },
     onLoad: function() {
         this.getStoredData('time', data => {
@@ -95,9 +98,15 @@ const options = {
             panel.transform = 'translateX(0)';
             this.hidden = false;
         } else {
-            panel.transform = 'translateX(-250px)';
+            panel.transform = 'translateX(-260px)';
+            this.panels.forEach(panel => panel.style.maxHeight = '0px');
+
             this.hidden = true;
         }
+    },
+    togglePanel: function() {
+        let panel = this.parentNode.children[1];
+        panel.style.maxHeight = (panel.style.maxHeight == '0px' || panel.style.maxHeight == '') ? '500px' : '0px';
     }
 }
 
@@ -295,8 +304,8 @@ const background = {
         style.backgroundRepeat = 'no-repeat';
         
         let ss = document.styleSheets[3];
-        ss.cssRules[18].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
-        ss.cssRules[18].style.backgroundSize = 'cover';
+        ss.cssRules[1].style.background = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(${url})`;
+        ss.cssRules[1].style.backgroundSize = 'cover';
     },
     setUser: function(name, url) {
         this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`;
