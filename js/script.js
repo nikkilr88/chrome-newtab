@@ -358,8 +358,9 @@ const weather = {
     getIcon: function(id) {
         switch (id) {
             case '01d':
-            case '01n':
                 return '<i class="wi wi-day-sunny"></i>';
+            case '01n':
+                return '<i class="wi wi-night-clear"></i>';
 
             case '02d':
             case '02n':
