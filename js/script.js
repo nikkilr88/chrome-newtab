@@ -304,20 +304,22 @@ const background = {
     let url = `https://api.unsplash.com/photos/${this.ids[rand]}?client_id=${
       keys.unsplash
     }`
-    fetch(url).then(response => {
-      if (response.status !== 200) {
-        console.log('Oops!')
-        return
-      }
-      response.json().then(data => {
-        let img = data.urls.regular
-        let name = data.user.name
-        let link = data.user.links.html
+    fetch(url)
+      .then(response => {
+        if (response.status !== 200) {
+          this.handleErrors(null)
+          return
+        }
+        response.json().then(data => {
+          let img = data.urls.regular
+          let name = data.user.name
+          let link = data.user.links.html
 
-        this.setImage(img)
-        this.setUser(name, link)
+          this.setImage(img)
+          this.setUser(name, link)
+        })
       })
-    })
+      .catch(err => this.handleErrors(err))
   },
   setImage: function(url) {
     let styles = {
@@ -338,6 +340,11 @@ const background = {
   },
   setUser: function(name, url) {
     this.name.innerHTML = `<a href='${url}' target='_blank'>${name}</a>`
+  },
+  handleErrors: function(err) {
+    console.log(`FETCH BACKGROUND ERROR: ${err || ''}`)
+    this.setImage('../images/fallback.jpg')
+    this.setUser('No Internet Connection', 'javascript: void(0)')
   }
 }
 
@@ -366,24 +373,25 @@ const weather = {
       options.zip.value = data.zip
       let url = `${this.url}&zip=${data.zip}`
 
-      fetch(url).then(res => {
-        if (res.status !== 200) {
-          console.log('Oops!')
-          return
-        }
-
-        res.json().then(data => {
-          let iconId = data.weather[0].icon
-          let temp = data.main.temp
-
-          let weather = {
-            icon: this.getIcon(iconId),
-            temp: Math.round(data.main.temp)
+      fetch(url)
+        .then(res => {
+          if (res.status !== 200) {
+            this.handleErrors(null, fn)
+            return
           }
 
-          fn(weather)
+          res.json().then(data => {
+            let iconId = data.weather[0].icon
+            let temp = data.main.temp
+            let weather = {
+              icon: this.getIcon(iconId),
+              temp: Math.round(data.main.temp)
+            }
+
+            fn(weather)
+          })
         })
-      })
+        .catch(err => this.handleErrors(err, fn))
     })
   },
   getIcon: function(id) {
@@ -421,8 +429,18 @@ const weather = {
   },
   display: function() {
     this.getWeather(data => {
-      this.weather.innerHTML = `${data.icon} ${data.temp}°`
+      let temp = typeof data.temp == 'number' ? `${data.temp}°` : ''
+      this.weather.innerHTML = `${data.icon} ${temp}`
     })
+  },
+  handleErrors: function(err, fn) {
+    console.log(`FETCH WEATHER ERROR: ${err || ''}`)
+
+    let data = {
+      icon: '<i class="material-icons">error_outline</i>',
+      temp: ''
+    }
+    fn(data)
   }
 }
 
